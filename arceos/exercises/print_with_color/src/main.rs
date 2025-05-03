@@ -6,5 +6,5 @@ use axstd::println;
 
 #[cfg_attr(feature = "axstd", no_mangle)]
 fn main() {
-    println!("[WithColor]: Hello, Arceos!");
+    println!("[WithColor]: \x1b[1;31m Hello, Arceos!");
 }
