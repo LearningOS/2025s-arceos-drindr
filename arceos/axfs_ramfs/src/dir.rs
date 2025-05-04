@@ -67,6 +67,15 @@ impl DirNode {
         children.remove(name);
         Ok(())
     }
+
+    /// Renames a node
+    pub fn rename_node(&self, old_name: &str, new_name: &str) -> VfsResult {
+        let mut children = self.children.write();
+
+        let node = children.remove(old_name).ok_or(VfsError::NotFound)?;
+        children.insert(new_name.into(), node);
+        Ok(())
+    }
 }
 
 impl VfsNodeOps for DirNode {
@@ -163,6 +172,21 @@ impl VfsNodeOps for DirNode {
         } else {
             self.remove_node(name)
         }
+    }
+
+    fn rename(&self, old_path: &str, new_path: &str) -> VfsResult {
+        log::debug!("rename at ramfs: {} -> {}", old_path, new_path);
+        let new_name = if let Some((_, name)) = new_path.rsplit_once('/') {
+            name
+        } else {
+            new_path
+        };
+        let old_name = if let Some((_, name)) = old_path.rsplit_once('/') {
+            name
+        } else {
+            old_path
+        };
+        self.rename_node(old_name, new_name)
     }
 
     axfs_vfs::impl_vfs_dir_default! {}

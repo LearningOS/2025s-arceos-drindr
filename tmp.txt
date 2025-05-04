@@ -1,0 +1,5 @@
+    [92;1mCreating[0m FAT32 disk image "disk.img" ...
+mkfs.fat 4.2 (2021-01-31)
+Has color
+Has Hello, Arceos!
+print_with_color pass
